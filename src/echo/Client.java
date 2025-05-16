@@ -42,9 +42,32 @@ public class Client {
 		
 		//스캐너 준비
 		Scanner sc = new Scanner(System.in);
+
+		//------------------------------------
+		while(true) { //반복문
+			
+			//메세지 키보드로 입력받기
+			String msg = sc.nextLine(); //입력대기
+				
+			if("/q".equals(msg)) { //끝내는 상황 
+				//"/q"를 입력하면 <서버 종료> 라고 뜨고 반복문 종료
+				break;
+			}
+			
+			//메세지 보내기
+			bw.write(msg);
+			bw.newLine();
+			bw.flush(); //'안녕'이라는 글자 용량이 작아도 내보내
+			
+			//메세지 받기
+			String reMsg = br.readLine();
+			System.out.println("server:[" + reMsg + "]");
+			
+		}
 		
+		/*
 		//메시지 키보드로 입력받기
-		String msg = sc.nextLine(); //입력대기
+		String msg = sc.nextLine(); //입력대기		//Scanner 한번읽고 끝남 	//while반복문은 계속 입력하면 계속 보임 
 		
 		//메시지 보내기
 		bw.write(msg);
@@ -54,14 +77,17 @@ public class Client {
 		//메시지 받기
 		String reMsg = br.readLine();
 		System.out.println("server:[" +   reMsg  + "]");
+		*/
 		
 		System.out.println("===================================");
 		System.out.println("<클라이언트 종료>");
 		
 		//닫기
+		sc.close();
+		br.close();
 		bw.close();
 		socket.close();
-		sc.close();
+	
 	}
 
 }

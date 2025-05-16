@@ -20,6 +20,10 @@ public class Server {
 		ServerSocket serverSocket = new ServerSocket();
 		
 		//bind 	ip : 192.168.0.66 	 port : 10101
+		/*
+		InetSocketAddress ipport = new InetSocketAddress("192.168.0.66", 10101);
+		serverSocket.bind(ipport);
+		*/
 		serverSocket.bind(new InetSocketAddress("192.168.0.66", 10101));
 		
 		//서버시작
@@ -32,7 +36,7 @@ public class Server {
 		Socket socket = serverSocket.accept();
 		System.out.println("[클라이언트가 연결 되었습니다.]");
 		
-		//읽기 스트림  --> 메세지를 받는다.
+		//읽기 스트림  
 		//InputStream in = new FileInputStream("C:\\javaStudy\\MS949-copy.txt");
 		InputStream in = socket.getInputStream();
 		InputStreamReader isr= new InputStreamReader(in,"UTF-8");
@@ -43,16 +47,25 @@ public class Server {
 		OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
 		BufferedWriter bw = new BufferedWriter(osw);
 		
-		//메시지 받기
-		String msg = br.readLine();
-		System.out.println("받은 메시지: "+msg);
-		
-		//메시지 보내기
-		bw.write(msg);
-		bw.newLine();
-		bw.flush(); //'안녕'이라는 글자 용량이 작아도 내보내
-		
-		System.out.println("===================================");
+		//--------------------------------------
+		while(true) {
+			//메세지 받기
+			String msg = br.readLine();
+			
+			if(msg == null) {
+				break;
+			}
+			
+			System.out.println("받은메세지:" + msg);
+					
+			//메세지 보내기
+			bw.write(msg);
+			bw.newLine();
+			bw.flush(); //'안녕'이라는 글자 용량이 작아도 내보내
+			//------------------------------
+		}
+
+		System.out.println("=================================");
 		System.out.println("<서버 종료>");
 		
 		//자원정리
