@@ -1,6 +1,12 @@
 package echo;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -26,20 +32,33 @@ public class Server {
 		Socket socket = serverSocket.accept();
 		System.out.println("[클라이언트가 연결 되었습니다.]");
 		
+		//읽기 스트림  --> 메세지를 받는다.
+		//InputStream in = new FileInputStream("C:\\javaStudy\\MS949-copy.txt");
+		InputStream in = socket.getInputStream();
+		InputStreamReader isr= new InputStreamReader(in,"UTF-8");
+		BufferedReader br = new BufferedReader(isr);
 		
+		//쓰기 스트림 준비
+		OutputStream out = socket.getOutputStream(); //주스트림
+		OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
+		BufferedWriter bw = new BufferedWriter(osw);
 		
+		//메시지 받기
+		String msg = br.readLine();
+		System.out.println("받은 메시지: "+msg);
 		
-		
-		
-		
-		
+		//메시지 보내기
+		bw.write(msg);
+		bw.newLine();
+		bw.flush(); //'안녕'이라는 글자 용량이 작아도 내보내
 		
 		System.out.println("===================================");
 		System.out.println("<서버 종료>");
 		
 		//자원정리
-		socket.close();
+		socket.close(); 
+		br.close();
+		bw.close();
 		serverSocket.close();
 	}
-
 }
